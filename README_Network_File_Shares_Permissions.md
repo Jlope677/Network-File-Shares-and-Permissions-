@@ -1,8 +1,5 @@
 # Network File Shares & Permissions (Active Directory Lab)
 
-> **Status:** Complete • **Author:** Josephine Lopez • **Tech Focus:** Windows Server + AD + SMB Share Security  
-> _A hands-on lab demonstrating how I designed, implemented, and verified NTFS/Share permissions and group-based access control in a small Active Directory environment._
-
 ---
 
 ## 🔎 Project Summary
