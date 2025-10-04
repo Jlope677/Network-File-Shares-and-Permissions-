@@ -75,7 +75,8 @@ On **Client-1** (logged in as `mydomain\gef.hoc`):
     ![Access Denied Folder](https://github.com/user-attachments/assets/2053ed7e-374a-496a-ae7c-6c45a5f95929)  
 
 **What I Learned:**  
-Testing as a normal user confirmed that permissions worked exactly as expected. Regular users could only read, write, or were blocked depending on how the folder was set up.  
+Testing as a normal user confirmed that permissions worked exactly as expected. Regular users could only read, write, or were blocked depending on how the folder was set up.
+  
 ---
 
 ### **Step 4 – Configure the `ACCOUNTANTS` Group & Secure the Share**  
