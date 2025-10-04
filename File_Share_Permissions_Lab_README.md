@@ -125,9 +125,12 @@ Using groups made the process much easier. Instead of giving access to each pers
 ---
 
 ## ✅ Conclusion  
-This lab reinforced my understanding of **file share permissions** and **Active Directory group management**. I practiced:  
-- Creating and sharing folders with different access levels.  
-- Testing user vs. admin permissions.  
-- Implementing group-based security for controlled access.  
 
-These skills are essential for **System Administrators**, especially when managing file servers and sensitive departmental data.  
+This lab showed me how to control who can see, edit, or access shared folders in a Windows domain. I practiced:  
+
+- Creating folders with different access levels (read, write, or no access).  
+- Testing the difference between normal users and admins.  
+- Using groups (like ACCOUNTANTS) to give the right people access quickly.  
+
+These are the kinds of tasks **System Administrators** do every day to keep company files organized and secure.  
+
