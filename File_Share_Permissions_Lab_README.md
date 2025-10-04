@@ -23,7 +23,7 @@ I worked with two virtual machines:
 - Verified domain connectivity.  
 
 **What I Learned:**  
-Setting up and verifying connectivity is critical before testing any permissions, ensuring that the domain controller and clients can communicate.  
+Before doing anything with permissions, it’s important to make sure the servers and clients can communicate. If the machines aren’t connected, nothing else will work.
 
 ---
 
@@ -53,7 +53,8 @@ On **DC-1**:
 
 
 **What I Learned:**  
-File share permissions let you design controlled access. By default, users don’t have access unless explicitly granted.  
+Different folders can be given different levels of access. Some users can only view files, others can edit them, and some folders are locked down completely. This is the basic idea behind secure file sharing.  
+
 
 ---
 
@@ -75,30 +76,48 @@ Permissions behaved exactly as configured. Normal domain users could read or wri
 
 ---
 
-### **Step 4 – Configure ACCOUNTANTS Group**  
-On **DC-1**:  
-1. In Active Directory Users and Computers, created a new security group: **ACCOUNTANTS**.                                                                          <img width="1182" height="715" alt="new organazational unit" src="https://github.com/user-attachments/assets/44bbee92-8b32-4a11-87dc-e3273d5c28cd" />
-<img width="1066" height="755" alt="new group" src="https://github.com/user-attachments/assets/0f150da6-2228-400f-8a71-de33222fd5a7" />
-<img width="575" height="532" alt="new group2" src="https://github.com/user-attachments/assets/0216a283-92cd-4f23-b6a1-cc0e84cfe359" />
-2. On the **accounting** folder, granted:  
-   - **ACCOUNTANTS** → *Read/Write*.  
-<img width="1424" height="744" alt="accounting folder permissions" src="https://github.com/user-attachments/assets/33158de0-bedb-4fe2-996b-803db1b40929" />
+### **Step 4 – Configure the `ACCOUNTANTS` Group & Secure the Share**  
 
+#### 4.1 Create a Security Group in AD
+1. On **DC-1**, open **Active Directory Users and Computers (ADUC)**.  
+2. (Optional) Create an **Organizational Unit (OU)** for better organization.  
+   ![Create OU](https://github.com/user-attachments/assets/44bbee92-8b32-4a11-87dc-e3273d5c28cd)  
+3. Right-click → **New → Group**.  
+   ![New Group Dialog](https://github.com/user-attachments/assets/0f150da6-2228-400f-8a71-de33222fd5a7)  
+4. Name it **ACCOUNTANTS** (Global / Security).  
+   ![Group Properties](https://github.com/user-attachments/assets/0216a283-92cd-4f23-b6a1-cc0e84cfe359)  
 
-On **Client-1**:  
-- As a normal user (not in group), access to **accounting** failed as expected.
-  <img width="1442" height="755" alt="try to access the accountants folder  It should fail" src="https://github.com/user-attachments/assets/85877bb1-df09-46d5-8c0d-dbf4577a916b" />
-- After adding the same user into **ACCOUNTANTS** group on DC-1, logging back in allowed full access.
-  **Adding user**
- <img width="965" height="644" alt="member of the ACCOUNTANTS" src="https://github.com/user-attachments/assets/45c8db09-3f18-41e0-bddc-df4b157d474d" />
- <img width="576" height="591" alt="member of the ACCOUNTANTS(2)" src="https://github.com/user-attachments/assets/facab7d6-4ca9-472f-b1cd-196784314955" />
-  **accessing Folder again**
- <img width="1562" height="643" alt="try to access the accounting again" src="https://github.com/user-attachments/assets/55819ef9-d5f9-4f87-a7a5-aee9a91d3b62" />
- 
+---
 
- 
+#### 4.2 Grant Permissions on the `accounting` Folder
+1. On **DC-1**, right-click `C:\accounting` → **Properties → Sharing** → enable sharing.  
+2. Add **ACCOUNTANTS** group → give **Read/Write**.  
+   ![Accounting Folder Permissions](https://github.com/user-attachments/assets/33158de0-bedb-4fe2-996b-803db1b40929)  
+
+---
+
+#### 4.3 Validate Access from Client-1 (Before Membership)
+- On **Client-1**, logged in as a normal user → tried to open `\\DC-1\accounting`.  
+- **Result:** Access denied.  
+  ![Access Denied Before Membership](https://github.com/user-attachments/assets/85877bb1-df09-46d5-8c0d-dbf4577a916b)  
+
+---
+
+#### 4.4 Add User to `ACCOUNTANTS` Group
+1. On **DC-1**, open **ADUC** → user properties → **Member Of → Add… → ACCOUNTANTS**.  
+   ![User Member Of 1](https://github.com/user-attachments/assets/45c8db09-3f18-41e0-bddc-df4b157d474d)  
+   ![User Member Of 2](https://github.com/user-attachments/assets/facab7d6-4ca9-472f-b1cd-196784314955)  
+
+---
+
+#### 4.5 Re-Test Access After Membership
+- On **Client-1**, signed back in as the same user → opened `\\DC-1\accounting`.  
+- **Result:** Access granted with Read/Write.  
+  ![Access Granted After Membership](https://github.com/user-attachments/assets/55819ef9-d5f9-4f87-a7a5-aee9a91d3b62)  
+
 **What I Learned:**  
-Group-based access control is scalable and efficient. Instead of editing each user’s permissions individually, roles (like “Accountants”) can manage access cleanly across the domain.  
+Using groups made the process much easier. Instead of giving access to each person one at a time, I just put the user in the **ACCOUNTANTS** group. This gave them access right away and showed me how group-based permissions make managing folders simpler and more secure.  
+
 
 ---
 
